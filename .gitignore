@@ -1,0 +1,13 @@
+MDK-ARM/STM32G4_CONFIG/
+
+
+# 忽略所有特定的编译临时文件
+*.o
+*.d
+*.crf
+*.dep
+*.uvguix.*
+*.htm
+*.lnp
+*.sct
+*.lst
