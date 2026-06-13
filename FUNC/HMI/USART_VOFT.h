@@ -3,13 +3,15 @@
 
 #include "board.h"
 
-#define TEST_CLARK 1
-#define TEST_PWM_GNE 0
+#define TEST_CLARK    0
+#define TEST_PWM_GNE  0
 #define TEST_CURR_UVW 0
 
 #if TEST_CURR_UVW
     #define CH_COUNT 3
 #elif TEST_CLARK
+    #define CH_COUNT 5
+#else
     #define CH_COUNT 5
 #endif
 

@@ -7,10 +7,10 @@
 #include "Clark_test.h"
 #include "USART_VOFT.h"
 #include "board.h"
+#include "myVF.h"
+#include "MT.h"
 
-//#define TEST_CLARK 1
-//#define TEST_PWM_GNE 0
-//#define TEST_CURR_UVW 0
+
 
 extern void FUNC_runTask(void);
 

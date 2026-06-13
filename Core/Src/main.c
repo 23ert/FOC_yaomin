@@ -120,6 +120,7 @@ int main(void)
   HAL_UART_Receive_IT(&huart3,(uint8_t*)&aRxBuffer,1);
   /* USER CODE END 2 */
   testTIM();
+  VF_configPara(&vfin);
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -131,7 +132,7 @@ int main(void)
 	//  VOFT_TEST();
     /* USER CODE END WHILE */
 	// VOFT_sendUdc();
-     // clc_sendUdc();
+    
     
       #if   TEST_CLARK
          VOFT_comClark();

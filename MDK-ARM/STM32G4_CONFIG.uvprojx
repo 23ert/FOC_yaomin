@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32G431xx,__TARGET_FPU_VFP,__FPU_PRESENT,ARM_MATH_CM4</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/CMSIS/Include;..\Board;..\Core\Src;..\FUNC;..\FUNC\StateMachine;..\MATLAB;..\Middlewares\ST\ARM\DSP\Inc;..\Middlewares\ST\ARM\DSP\Lib;..\FUNC\HMI</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/CMSIS/Include;..\Board;..\Core\Src;..\FUNC;..\FUNC\StateMachine;..\MATLAB;..\Middlewares\ST\ARM\DSP\Inc;..\Middlewares\ST\ARM\DSP\Lib;..\FUNC\HMI;..\FUNC\SpeedCtrl;..\FUNC\VF</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -673,6 +673,16 @@
               <FileType>5</FileType>
               <FilePath>..\FUNC\HMI\USART_VOFT.h</FilePath>
             </File>
+            <File>
+              <FileName>MT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FUNC\MT.c</FilePath>
+            </File>
+            <File>
+              <FileName>MT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\FUNC\MT.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -707,6 +717,24 @@
               <FileName>arm_cortexM4lf_math.lib</FileName>
               <FileType>4</FileType>
               <FilePath>..\Middlewares\ST\ARM\DSP\Lib\arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>FUNC/SpeedCtrl</GroupName>
+        </Group>
+        <Group>
+          <GroupName>FUNC/VF</GroupName>
+          <Files>
+            <File>
+              <FileName>myVF.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FUNC\VF\myVF.c</FilePath>
+            </File>
+            <File>
+              <FileName>myVF.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\FUNC\VF\myVF.h</FilePath>
             </File>
           </Files>
         </Group>
