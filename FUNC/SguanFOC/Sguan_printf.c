@@ -20,6 +20,8 @@
 
 /* 内部私有变量与函数 */
 uint8_t Sguan_PrintfBuff[200];
+
+uint8_t Sguan_RxBuff[200];
 static float Get_Data_Fast(uint8_t start_idx);
 static void Printf_Adjust(void);
 static void Handle_MOTOR(float value);
@@ -138,6 +140,8 @@ static void Printf_Adjust(void){
             }
         }
     }
+
+    memcpy(Sguan_RxBuff, Sguan_PrintfBuff, sizeof(Sguan_PrintfBuff));
 
     // 5. 清理缓冲区
     memset(Sguan_PrintfBuff, 0, sizeof(Sguan_PrintfBuff));

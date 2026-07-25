@@ -85,26 +85,26 @@ static inline void User_UserTX(void){
     // 传入串口printf要发送的数据，如txdata.fdata[0]，最多默认16个数值
     // 如需传入更多数值，请修改Sguan_printf中的参数
     // ========== 组1: 状态与核心指令 (0-3) ==========
-    // Sguan.txdata.fdata[0] = (float)Sguan.status;        // 状态机当前状态码
-    // Sguan.txdata.fdata[1] = Sguan.foc.Target_Speed;     // 目标机械转速 (rad/s)
-    // Sguan.txdata.fdata[2] = Sguan.foc.Target_Iq;        // 目标Q轴电流 (A)
-    // Sguan.txdata.fdata[3] = Sguan.foc.Target_Id;        // 目标D轴电流 (A)
+    Sguan.txdata.fdata[0] = (float)Sguan.status;        // 状态机当前状态码
+    Sguan.txdata.fdata[1] = Sguan.foc.Target_Speed;     // 目标机械转速 (rad/s)
+    Sguan.txdata.fdata[2] = Sguan.foc.Target_Iq;        // 目标Q轴电流 (A)
+    Sguan.txdata.fdata[3] = Sguan.foc.Target_Id;        // 目标D轴电流 (A)
 
     // // ========== 组2: 实际反馈 (4-7) ==========
     // Sguan.txdata.fdata[4] = Sguan.encoder.Real_Speed;   // 实际机械转速 (rad/s)
-    // Sguan.txdata.fdata[5] = Sguan.current.Real_Iq;      // 实际Q轴电流 (A)
-    // Sguan.txdata.fdata[6] = Sguan.current.Real_Id;      // 实际D轴电流 (A)
+     Sguan.txdata.fdata[5] = Sguan.current.Real_Iq;      // 实际Q轴电流 (A)
+     Sguan.txdata.fdata[6] = Sguan.current.Real_Id;      // 实际D轴电流 (A)
     // Sguan.txdata.fdata[7] = Sguan.encoder.Real_Pos;     // 实际机械角度 (rad)
 
     // // ========== 组3: 控制器输出与中间变量 (8-14) ==========
-    // Sguan.txdata.fdata[8]  = Sguan.foc.Uq_in;           // Q轴电压指令 (V)
-    // // Sguan.txdata.fdata[9]  = Sguan.foc.Ud_in;           // D轴电压指令 (V)
+     Sguan.txdata.fdata[8]  = Sguan.foc.Uq_in;           // Q轴电压指令 (V)
+      Sguan.txdata.fdata[9]  = Sguan.foc.Ud_in;           // D轴电压指令 (V)
     // Sguan.txdata.fdata[9]  = Sguan.encoder.Real_Re;           // D轴电压指令 (V)
     // Sguan.txdata.fdata[10] = Sguan.foc.Real_VBUS;       // 母线电压实际值 (V)
 
-    // Sguan.txdata.fdata[11] = Sguan.current.Real_Ia;  
-    // Sguan.txdata.fdata[12] = Sguan.current.Real_Ib;  
-    // Sguan.txdata.fdata[13] = Sguan.current.Real_Ic;           
+     Sguan.txdata.fdata[11] = Sguan.current.Real_Ia;  
+     Sguan.txdata.fdata[12] = Sguan.current.Real_Ib;  
+     Sguan.txdata.fdata[13] = Sguan.current.Real_Ic;           
 
     // // Sguan.txdata.fdata[11] = Sguan.foc.Du;              // U相占空比 (0~1)
     // // Sguan.txdata.fdata[12] = Sguan.foc.Dv;              // V相占空比 (0~1)
@@ -124,7 +124,7 @@ static inline void User_UserTX(void){
     // Sguan.txdata.fdata[14] = Sguan.current.Real_Ialpha;     // A相瞬时电流值 (A)
     // Sguan.txdata.fdata[15] = Sguan.current.Real_Ibeta;     // A相瞬时电流值 (A)
 
-    Sguan.txdata.fdata[0] = Sguan.encoder.Real_Speed;
+    //Sguan.txdata.fdata[0] = Sguan.encoder.Real_Speed;
 
 
 
@@ -137,13 +137,13 @@ static inline void User_UserTX(void){
     // Sguan.txdata.fdata[6] = sin_theta;
     // Sguan.txdata.fdata[7] = cos_theta;
 
-    Sguan.txdata.fdata[1] = MT_Sam.CurrU;
-    Sguan.txdata.fdata[2] = MT_Sam.CurrV;
-    Sguan.txdata.fdata[3] = MT_Sam.CurrW;
+    // Sguan.txdata.fdata[1] = MT_Sam.CurrU;
+    // Sguan.txdata.fdata[2] = MT_Sam.CurrV;
+    // Sguan.txdata.fdata[3] = MT_Sam.CurrW;
 
-    Sguan.txdata.fdata[4] = Sguan.current.Real_Ia;  
-    Sguan.txdata.fdata[5] = Sguan.current.Real_Ib;  
-    Sguan.txdata.fdata[6] = Sguan.current.Real_Ic;      
+    // Sguan.txdata.fdata[4] = Sguan.current.Real_Ia;  
+    // Sguan.txdata.fdata[5] = Sguan.current.Real_Ib;  
+    // Sguan.txdata.fdata[6] = Sguan.current.Real_Ic;      
 
 
 
@@ -153,13 +153,13 @@ static inline void User_UserTX(void){
     // Sguan.txdata.fdata[10] = Sguan.foc.Ubeta;    // Sguan反Park输出β
     // Sguan.txdata.fdata[11] = vf_vbeta;           // myVF反Park输出β
 
-    Sguan.txdata.fdata[8] = VF_PWMLoad[0];
-    Sguan.txdata.fdata[9] = VF_PWMLoad[1];
-    Sguan.txdata.fdata[10] =VF_PWMLoad[2];
+    // Sguan.txdata.fdata[8] = VF_PWMLoad[0];
+    // Sguan.txdata.fdata[9] = VF_PWMLoad[1];
+    // Sguan.txdata.fdata[10] =VF_PWMLoad[2];
 
-    Sguan.txdata.fdata[11] = pwmu;
-    Sguan.txdata.fdata[12] = pwmv;
-    Sguan.txdata.fdata[13] = pwmw;
+    // Sguan.txdata.fdata[11] = pwmu;
+    // Sguan.txdata.fdata[12] = pwmv;
+    // Sguan.txdata.fdata[13] = pwmw;
 
     
 
