@@ -4,6 +4,10 @@
 
 #include "board.h"
 
+#define CONFIG_MYMODE VF
+#define VF 0
+
+
 /** 电机控制采样数据*/
 typedef struct {
     float Udc;         /* 母线电压*/

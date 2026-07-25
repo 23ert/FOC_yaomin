@@ -9,8 +9,10 @@
 #include "board.h"
 #include "myVF.h"
 #include "MT.h"
+#include "SguanFOC.h"
 
-
+#define SMGUAN_FOC 1
+#define MY_FOC_TEST 1
 
 extern void FUNC_runTask(void);
 

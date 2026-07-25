@@ -14,7 +14,13 @@
 #include "usart.h"
 #include "dma.h"
 
+#define ADC_CURRU_REG hadc1.Instance->JDR1
+#define ADC_CURRV_REG hadc2.Instance->JDR1
+#define ADC_CURRW_REG hadc1.Instance->JDR2
 
+#define LOAD_U_COMP(X)  TIM1->CCR1 = X;
+#define LOAD_V_COMP(X)  TIM1->CCR2 = X;
+#define LOAD_W_COMP(X)  TIM1->CCR3 = X;
 
 
 extern void testTIM(void);

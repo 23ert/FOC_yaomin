@@ -24,6 +24,8 @@
 VF_Handle_t vf = {0};
 VF_Input_t  vfin = {0};
 float VF_PWMLoad[3];
+float sin_theta, cos_theta;
+float vf_valpha, vf_vbeta;   /* 调试对比用：暴露反Park输出 */
 
 #define M_PI 3.14159f
 
@@ -53,7 +55,7 @@ void VF_Init(VF_Handle_t *h)
 void VF_configPara(VF_Input_t *vfc)
 {
     vfc->ud = 0.0f;
-    vfc->uq = 12.0f;
+    vfc->uq = 6.0f;
     vfc->freq = 3;
     vfc->vbus = 24;
     
@@ -67,8 +69,8 @@ void myVF_Step(VF_Handle_t *h,  VF_Input_t *in, float out[3])
     h->angle = Angle_Wrap(h->angle);
 
     /* ---- 2. 计算 sin / cos ---- */
-    float sin_theta = arm_sin_f32(h->angle);
-    float cos_theta = arm_cos_f32(h->angle);
+     sin_theta = arm_sin_f32(h->angle);
+     cos_theta = arm_cos_f32(h->angle);
 
     /* ---- 3. 反 Park 变换 (dq -> alpha-beta) ----
      *   Valpha = Ud * cos(theta) - Uq * sin(theta)
@@ -76,6 +78,8 @@ void myVF_Step(VF_Handle_t *h,  VF_Input_t *in, float out[3])
      */
     float valpha = in->ud * cos_theta - in->uq * sin_theta;
     float vbeta  = in->ud * sin_theta + in->uq * cos_theta;
+    vf_valpha = valpha;   /* 调试对比用 */
+    vf_vbeta  = vbeta;
 
     /* ---- 4. SVPWM: (Valpha, Vbeta) -> 三相占空比 ---- */
     SVPWM_Calc(valpha, vbeta, in->vbus, out);

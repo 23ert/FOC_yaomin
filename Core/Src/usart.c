@@ -20,12 +20,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
 
+
+
 /* USER CODE BEGIN 0 */
 #define BAUD_RATE 921600
+void UART3_StartRxDMA(void);   /* 前向声明：启动 USART3 接收 DMA */
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart3_tx;
+DMA_HandleTypeDef hdma_usart3_rx;
 
 /* USART3 init function */
 
@@ -67,7 +71,7 @@ void MX_USART3_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART3_Init 2 */
-
+ // UART3_StartRxDMA();   /* 启动 USART3 接收 DMA（环形 + 空闲中断） */
   /* USER CODE END USART3_Init 2 */
 
 }
@@ -83,6 +87,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE END USART3_MspInit 0 */
     /* USART3 clock enable */
     __HAL_RCC_USART3_CLK_ENABLE();
+
+    /* DMA1 与 DMAMUX1 时钟使能（USART3 TX/RX 均走 DMA） */
+    // __HAL_RCC_DMA1_CLK_ENABLE();
+    // __HAL_RCC_DMAMUX1_CLK_ENABLE();
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**USART3 GPIO Configuration
@@ -114,9 +122,30 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
     __HAL_LINKDMA(uartHandle,hdmatx,hdma_usart3_tx);
 
+    /* USART3_RX Init */
+    hdma_usart3_rx.Instance = DMA1_Channel2;
+    hdma_usart3_rx.Init.Request = DMA_REQUEST_USART3_RX;
+    hdma_usart3_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_usart3_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart3_rx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart3_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart3_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart3_rx.Init.Mode = DMA_NORMAL;          /* 环形：配合 IDLE 中断持续接收 */
+    hdma_usart3_rx.Init.Priority = DMA_PRIORITY_LOW;
+    if (HAL_DMA_Init(&hdma_usart3_rx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart3_rx);
+
     /* USART3 interrupt Init */
     HAL_NVIC_SetPriority(USART3_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USART3_IRQn);
+
+    /* USART3 RX DMA interrupt Init */
+    // HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+    // HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
   /* USER CODE BEGIN USART3_MspInit 1 */
 
   /* USER CODE END USART3_MspInit 1 */
@@ -142,14 +171,27 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
     /* USART3 DMA DeInit */
     HAL_DMA_DeInit(uartHandle->hdmatx);
+    HAL_DMA_DeInit(uartHandle->hdmarx);
 
     /* USART3 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART3_IRQn);
+   // HAL_NVIC_DisableIRQ(DMA1_Channel2_IRQn);
   /* USER CODE BEGIN USART3_MspDeInit 1 */
 
   /* USER CODE END USART3_MspDeInit 1 */
   }
 }
+
+
+
+// void UART3_StartRxDMA(void)
+// {
+//     if (HAL_UARTEx_ReceiveToIdle_DMA(&huart3, Sguan_PrintfBuff, UART3_RX_BUF_SIZE) != HAL_OK)
+//         Error_Handler();
+// }
+
+
+
 
 /* USER CODE BEGIN 1 */
 

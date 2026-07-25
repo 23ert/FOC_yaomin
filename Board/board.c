@@ -4,13 +4,13 @@
 
 #define ADC_UDC_REG   hadc2.Instance->DR
 #define ADC_UPOT_REG  hadc1.Instance->DR
-#define ADC_CURRU_REG hadc1.Instance->JDR1
-#define ADC_CURRV_REG hadc2.Instance->JDR1
-#define ADC_CURRW_REG hadc1.Instance->JDR2
+// #define ADC_CURRU_REG hadc1.Instance->JDR1
+// #define ADC_CURRV_REG hadc2.Instance->JDR1
+// #define ADC_CURRW_REG hadc1.Instance->JDR2
 
-#define LOAD_U_COMP(X)  TIM1->CCR1 = X;
-#define LOAD_V_COMP(X)  TIM1->CCR2 = X;
-#define LOAD_W_COMP(X)  TIM1->CCR3 = X;
+//#define LOAD_U_COMP(X)  TIM1->CCR1 = X;
+//#define LOAD_V_COMP(X)  TIM1->CCR2 = X;
+//#define LOAD_W_COMP(X)  TIM1->CCR3 = X;
 
 extern void Drive_calcUdc(MT_Sam_t *pMT);
 
@@ -37,6 +37,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
   if(Button2_Pin == GPIO_Pin)
   {
+    DISPWMABC(); //dispwm
 	 StateMachine_SetState(STATE_STOP);
   }
   if(Button3_Pin == GPIO_Pin)
@@ -159,7 +160,7 @@ void DISPWMABC(void)
 
 void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-//	uint16_t Xbufsize;
+	uint16_t Xbufsize;
 	//float temp;
 	if(hadc == &hadc1)
 	{
@@ -177,10 +178,18 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
         #endif
 
         Drive_calcCurr(&MT_Sam);
+    #if SMGUAN_FOC
+        SguanFOC_High_Loop();
+
+        myVF_Step(&vf,&vfin,VF_PWMLoad);
+
+    #elif MY_FOC_TEST
         myVF_Step(&vf,&vfin,VF_PWMLoad);
         LOAD_U_COMP(VF_PWMLoad[0]);
         LOAD_V_COMP(VF_PWMLoad[1]);
         LOAD_W_COMP(VF_PWMLoad[2]);
+
+    #endif
 
 	}
 

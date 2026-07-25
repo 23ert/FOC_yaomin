@@ -51,6 +51,8 @@ void myVF_Step(VF_Handle_t *h, VF_Input_t *in, float out[3]);
 extern VF_Input_t  vfin;
 extern VF_Handle_t vf;
 extern float VF_PWMLoad[3];
+extern float sin_theta, cos_theta;
+extern float vf_valpha, vf_vbeta;
 
 extern void VF_configPara(VF_Input_t *vfc);
 

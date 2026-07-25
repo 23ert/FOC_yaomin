@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32g4xx_it.h"
+#include "SguanFOC.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -61,6 +62,7 @@ extern ADC_HandleTypeDef hadc2;
 extern COMP_HandleTypeDef hcomp1;
 extern TIM_HandleTypeDef htim1;
 extern DMA_HandleTypeDef hdma_usart3_tx;
+extern DMA_HandleTypeDef hdma_usart3_rx;
 extern UART_HandleTypeDef huart3;
 /* USER CODE BEGIN EV */
 
@@ -275,6 +277,12 @@ void USART3_IRQHandler(void)
   /* USER CODE END USART3_IRQn 1 */
 }
 
+void DMA1_Channel2_IRQHandler(void)
+{
+  HAL_DMA_IRQHandler(&hdma_usart3_rx);
+}
+
+
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
   */
@@ -303,6 +311,20 @@ void COMP1_2_3_IRQHandler(void)
   /* USER CODE BEGIN COMP1_2_3_IRQn 1 */
 
   /* USER CODE END COMP1_2_3_IRQn 1 */
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    if (huart->Instance == USART3 && Size > 0U)
+    {
+        // 轻量处理：拷贝到业务缓冲 + 置标志，重活放主循环
+         // 直接调用Printf_ProcessData处理接收到的数据
+        SguanFOC_Printf_Loop(Sguan_PrintfBuff, Size);
+        
+        // 重新启动DMA接收
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart3, Sguan_PrintfBuff, sizeof(Sguan_PrintfBuff));
+        __HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
+    }
 }
 /* USER CODE BEGIN 1 */
 

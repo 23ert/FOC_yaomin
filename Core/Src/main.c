@@ -117,7 +117,7 @@ int main(void)
   
   /* USER CODE BEGIN 2 */
   //enable once isr,and if trig,
-  HAL_UART_Receive_IT(&huart3,(uint8_t*)&aRxBuffer,1);
+ // HAL_UART_Receive_IT(&huart3,(uint8_t*)&aRxBuffer,1);
   /* USER CODE END 2 */
   testTIM();
   VF_configPara(&vfin);

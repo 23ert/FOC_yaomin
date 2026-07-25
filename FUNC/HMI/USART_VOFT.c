@@ -1,4 +1,4 @@
-﻿#include "USART_VOFT.h"
+#include "USART_VOFT.h"
 #include "func_main.h"
 
 
@@ -132,9 +132,9 @@ void VOFT_sendUdc(void)
 
 }
 
-int fputc(int ch,FILE *f)
-{
-	while((USART3->ISR  & 0x40) == 0);
-	USART3->TDR = (uint8_t)ch;
-	return ch;
-}
+//int fputc(int ch,FILE *f)
+//{
+//	while((USART3->ISR  & 0x40) == 0);
+//	USART3->TDR = (uint8_t)ch;
+//	return ch;
+//}
