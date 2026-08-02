@@ -35,7 +35,7 @@ void Printf_TX_Init(PRINTF_STRUCT *str);
 void Printf_TX_Loop(PRINTF_STRUCT *str);
 void Printf_RX_Init(void);
 void Printf_RX_Reset(RX_PARSER_CTX *ctx);                       // 外部复位解析状态（DMA 错乱/协议异常时调用）
-void Printf_RX_Loop(RX_PARSER_CTX *ctx, uint8_t *data, uint16_t length);
+void Printf_RX_Loop(uint8_t *data, uint16_t length);
 
 
 #endif // SGUAN_PRINTF_H
