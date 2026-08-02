@@ -33,12 +33,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   if(Button1_Pin == GPIO_Pin)
   {
 	 HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
-	 StateMachine_SetState(STATE_RUN);
+	 // 方案2：按键与串口 MOTOR=1 等价，统一走 Func_Start
+	 // (内部置状态机START并开启硬件PWM发波)
+	 Sguan.Func_Start();
   }
   if(Button2_Pin == GPIO_Pin)
   {
-    DISPWMABC(); //dispwm
-	 StateMachine_SetState(STATE_STOP);
+	 HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+	 // 方案2：按键与串口 MOTOR=0 等价，统一走 Func_Stop
+	 // (内部置状态机STANDBY并关闭硬件PWM关波)
+	 Sguan.Func_Stop();
   }
   if(Button3_Pin == GPIO_Pin)
   {
@@ -97,33 +101,7 @@ uint16_t test;
 //}
 
 
-void testTIM(void)
-{
-	//TIM1->PSC = 30000;
-    
-    TIM1->PSC = 1;
-//	TIM1->ARR = 10000;
-    
-    TIM1->ARR = 8000;
-    TIM1->CCR1 = 2000;
-    TIM1->CCR2 = 5000;
-    TIM1->CCR3 = 8000;
-    TIM1->CCR4 = 8000-2;
-    
-    HAL_TIM_Base_Start(&htim1);
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
-    //
-    HAL_ADCEx_InjectedStart_IT(&hadc1);
-    HAL_ADCEx_InjectedStart_IT(&hadc2);
-    
-    HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_1);
-    HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_2);
-    HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_3);
-	
-}
+
 
 
 void ENPWMABC(void)

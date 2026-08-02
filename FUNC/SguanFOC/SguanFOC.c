@@ -296,13 +296,19 @@ static void Sguan_Calculate_main_Loop(SguanFOC_System_STRUCT *sguan);
 
 // =============================== 电机控制函数(接口) =============================
 // Function控制接口->启动电机
+// 唯一“发波总开关”入口：置状态机为START，并开启硬件PWM(TIM1 ABC)与ADC触发
+// 串口 MOTOR=1 与物理按键均走此路径，保证行为一致
 static void Function_Start(void){
     Sguan.status = MOTOR_STATUS_START;
+    ENPWM_ADC();     // 启动TIM4触发ADC采样
+    ENPWMABC();      // 启动TIM1三通道PWM输出（硬件发波）
 }
 
 // Function控制接口->停止电机
+// 唯一“关波总开关”入口：置状态机为STANDBY，并关闭硬件PWM输出
 static void Function_Stop(void){
     Sguan.status = MOTOR_STATUS_STANDBY;
+    DISPWMABC();     // 停止TIM1三通道PWM输出（硬件关波）
 }
 
 // Function控制接口->设计目标电压
@@ -1668,6 +1674,9 @@ static void Status_Zero(SguanFOC_System_STRUCT *sguan){
             PWM_Tick(sguan,
                 (Ualpha/sguan->foc.Real_VBUS),
                 (Ubeta/sguan->foc.Real_VBUS));
+
+            // 状态机自动回待机(过压/过流/欠压等保护)时，同步关闭硬件PWM输出
+            DISPWMABC();
         }
         status = sguan->status;
     }

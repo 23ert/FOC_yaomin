@@ -113,14 +113,15 @@ int main(void)
 
   //Sample_InitCurr();
   FH_InitOverCurr();
-  StateMachine_Init();
+  DISPWMABC();
   
   /* USER CODE BEGIN 2 */
   //enable once isr,and if trig,
  // HAL_UART_Receive_IT(&huart3,(uint8_t*)&aRxBuffer,1);
   /* USER CODE END 2 */
-  testTIM();
+  // testTIM();  // 调试遗留：会写死CCR并开启TIM1三通道PWM，导致上电即出波啸叫，正常上电不执行
   VF_configPara(&vfin);
+  DISPWMABC();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

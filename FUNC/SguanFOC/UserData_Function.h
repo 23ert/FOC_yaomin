@@ -39,7 +39,11 @@ static inline void User_Initial_Init(void){
 
     User_Motor_Init(&Sguan);
     User_Parameter_Init(&Sguan);
-    
+
+    // 上电默认关波：board.c 初始化时已 HAL_TIM_PWM_Start 开启 TIM1 三通道，
+    // 必须显式 DISPWMABC 让电机保持待机(无输出)，直到用户按键/串口触发 Func_Start 才发波
+    DISPWMABC();
+
     // User_MotorInit();
     // User_ParaInit();
 }

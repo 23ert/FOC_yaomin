@@ -23,9 +23,6 @@
 #define LOAD_W_COMP(X)  TIM1->CCR3 = X;
 
 
-extern void testTIM(void);
-
-
 extern void ENPWMABC(void);
 extern void ENPWM_ADC(void);
 extern void DISPWMABC(void);
