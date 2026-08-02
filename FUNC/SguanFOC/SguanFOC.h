@@ -397,6 +397,7 @@ typedef struct{
     float Speed_in;                         // (输入量)速度环输入值
     float Ud_in;                            // (输入量)D轴电压输入
     float Uq_in;                            // (输入值)Q轴电压输入
+    float Umag;
 
     // ================= 修改线(上面可修改，下面为自动计算量) =================
     float Ualpha;                           // (中间量)alpha轴电压
@@ -519,6 +520,7 @@ typedef struct{
 // 电机控制核心结构体声明
 extern SguanFOC_System_STRUCT Sguan;
 extern uint32_t pwmu,pwmv,pwmw;
+extern float IdRaw,IqRaw;
 
 void SguanFOC_High_Loop(void);
 void SguanFOC_Low_Loop(void);

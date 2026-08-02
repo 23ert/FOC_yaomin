@@ -6,6 +6,8 @@
 
 #include "board.h"
 #include "MT.h"
+#include "UserData_Motor.h"
+#include "UserData_Parameter.h"
 
 // User profile is like:
 // #include "main.h"
@@ -34,6 +36,12 @@ static inline void User_Initial_Init(void){
     // // 启用串口DMA接收
     // HAL_UARTEx_ReceiveToIdle_DMA(&huart1, Sguan_PrintfBuff, sizeof(Sguan_PrintfBuff));
     // __HAL_DMA_DISABLE_IT(huart1.hdmarx, DMA_IT_HT);
+
+    User_Motor_Init(&Sguan);
+    User_Parameter_Init(&Sguan);
+    
+    // User_MotorInit();
+    // User_ParaInit();
 }
 
 /**

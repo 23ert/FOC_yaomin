@@ -49,7 +49,8 @@ SguanFOC 串口指令速查表（可直接复制到 VOFA+ 发送框）
 7. 设置目标机械转速
    Speed=4.712389?
    说明：写入 Sguan.foc.Target_Speed，单位 rad/s（机械角速度）。
-         当前极对数 Poles = 4，因此：         - 机械转速 4.712389 rad/s 对应电频率 3Hz
+         当前极对数 Poles = 4，因此：
+         - 机械转速 4.712389 rad/s 对应电频率 3Hz
          - 若要与 myVF.freq=3Hz 对齐，可直接发 Speed=4.712389?
 
    常用换算：

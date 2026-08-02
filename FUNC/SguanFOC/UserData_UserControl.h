@@ -90,11 +90,11 @@ static inline void User_UserTX(void){
     Sguan.txdata.fdata[2] = Sguan.foc.Target_Iq;        // 目标Q轴电流 (A)
     Sguan.txdata.fdata[3] = Sguan.foc.Target_Id;        // 目标D轴电流 (A)
 
-    // // ========== 组2: 实际反馈 (4-7) ==========
-    // Sguan.txdata.fdata[4] = Sguan.encoder.Real_Speed;   // 实际机械转速 (rad/s)
+    // ========== 组2: 实际反馈 (4-7) ==========
+     Sguan.txdata.fdata[4] = Sguan.encoder.Real_Speed;   // 实际机械转速 (rad/s)
      Sguan.txdata.fdata[5] = Sguan.current.Real_Iq;      // 实际Q轴电流 (A)
      Sguan.txdata.fdata[6] = Sguan.current.Real_Id;      // 实际D轴电流 (A)
-    // Sguan.txdata.fdata[7] = Sguan.encoder.Real_Pos;     // 实际机械角度 (rad)
+     Sguan.txdata.fdata[7] = Sguan.encoder.Real_Pos;     // 实际机械角度 (rad)
 
     // // ========== 组3: 控制器输出与中间变量 (8-14) ==========
      Sguan.txdata.fdata[8]  = Sguan.foc.Uq_in;           // Q轴电压指令 (V)
@@ -102,9 +102,14 @@ static inline void User_UserTX(void){
     // Sguan.txdata.fdata[9]  = Sguan.encoder.Real_Re;           // D轴电压指令 (V)
     // Sguan.txdata.fdata[10] = Sguan.foc.Real_VBUS;       // 母线电压实际值 (V)
 
-     Sguan.txdata.fdata[11] = Sguan.current.Real_Ia;  
-     Sguan.txdata.fdata[12] = Sguan.current.Real_Ib;  
-     Sguan.txdata.fdata[13] = Sguan.current.Real_Ic;           
+    Sguan.txdata.fdata[13] = Sguan.current.Real_Ia;      // A相电流 (A)
+    Sguan.txdata.fdata[14] = Sguan.current.Real_Ib;      // B相电流 (A)
+    Sguan.txdata.fdata[15] = Sguan.current.Real_Ic;      // C相电流 (A)
+
+    Sguan.txdata.fdata[10] = Sguan.transfer.Current_Q.run.Io;
+    Sguan.txdata.fdata[11] = Sguan.transfer.Current_Q.run.Output;
+
+    Sguan.txdata.fdata[12] = Sguan.foc.Umag;
 
     // // Sguan.txdata.fdata[11] = Sguan.foc.Du;              // U相占空比 (0~1)
     // // Sguan.txdata.fdata[12] = Sguan.foc.Dv;              // V相占空比 (0~1)
@@ -178,6 +183,8 @@ static inline void Handle_User0_Adjust(float data){
     /* Your code for Parameter set */
     // 接收到串口或者CAN的数据是User0=xx?
     // 收到指令后，会把数据赋值到data
+    Sguan.transfer.Current_D.Kp = data;//5.35
+    Sguan.transfer.Current_Q.Kp = data;//6097
 }
 
 /**
@@ -190,6 +197,8 @@ static inline void Handle_User1_Adjust(float data){
     /* Your code for Parameter set */
     // 接收到串口或者CAN的数据是User1=xx?
     // 收到指令后，会把数据赋值到data
+    Sguan.transfer.Current_D.Ki = data;
+    Sguan.transfer.Current_Q.Ki = data;
 }
 
 /**

@@ -3,6 +3,8 @@
 #include "SguanFOC.h"
 /* 电机控制User用户设置·电机参数(SguanFOC) */
 
+
+
 /**
  * @description: 实体参数填写函数的初始化代码
  * @reminder: (此方函数->填写电机实际物理参数)
@@ -86,5 +88,7 @@ static inline void User_Motor_Init(SguanFOC_System_STRUCT *user){
     user->flag.PWM_watchdog_limit = 10;             // (uint8_t)PWM错误次数限幅
 }   
 
+
+static inline void User_MotorInit(void){ User_Motor_Init(&Sguan); }
 
 #endif // USERDATA_MOTOR_H

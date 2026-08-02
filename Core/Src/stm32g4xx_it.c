@@ -318,11 +318,13 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     if (huart->Instance == USART3 && Size > 0U)
     {
         // 轻量处理：拷贝到业务缓冲 + 置标志，重活放主循环
-         // 直接调用Printf_ProcessData处理接收到的数据
+         // 将DMA接收缓冲(Sguan_RxBuff)拷贝到解析缓冲(Sguan_PrintfBuff)后再解析，
+         // 避免解析过程中DMA并发写同一数组导致缓冲污染（复刻原始可用架构）
+        memcpy(Sguan_PrintfBuff, Sguan_RxBuff, Size);
         SguanFOC_Printf_Loop(Sguan_PrintfBuff, Size);
-        
-        // 重新启动DMA接收
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart3, Sguan_PrintfBuff, sizeof(Sguan_PrintfBuff));
+
+        // 重新启动DMA接收（DMA 专用缓冲 Sguan_RxBuff，与解析缓冲分离）
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart3, Sguan_RxBuff, sizeof(Sguan_RxBuff));
         __HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
     }
 }

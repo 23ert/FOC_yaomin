@@ -3,6 +3,8 @@
 #include "SguanFOC.h"
 /* 电机控制User用户设置，Sguan.transfer和Sguan.motor.identify.data数据 */
 
+
+
 /**
  * @description: 控制器参数设计的初始化代码
  * @reminder: (此方函数->填写你设定好的控制器参数)
@@ -14,7 +16,7 @@ static inline void User_Parameter_Init(SguanFOC_System_STRUCT *user){
     // |                控制器参数Parameter设计                   |
     // +---------------------------------------------------------+
 
-    static float Curr_alpha = 1000.0f;//电流环的带宽 1000 rad/s
+    static float Curr_alpha = 250.0f;//电流环的带宽 1000 rad/s
 
     //电流环的Kp Ki参数确定规则
     //即PI控制器的零点 抵消电机传递函数的极点  I(s)=1/(L*s+R)
@@ -45,10 +47,10 @@ static inline void User_Parameter_Init(SguanFOC_System_STRUCT *user){
     user->transfer.Current_D.Kp = user->motor.identify.Ld*Curr_alpha;          // PID电流环D轴参数->Kp
     user->transfer.Current_D.Ki = user->motor.identify.Rs*Curr_alpha;         // PID电流环D轴参数->Ki
     user->transfer.Current_D.Kd = 0.0f;             // PID电流环D轴参数->Kd
-    user->transfer.Current_D.OutMax = 10.0f;        // PID电流环D轴参数->最大限幅
-    user->transfer.Current_D.OutMin = -10.0f;       // PID电流环D轴参数->最小限幅
-    user->transfer.Current_D.IntMax = 150.0f;       // PID电流环D轴参数->积分项上限
-    user->transfer.Current_D.IntMin = -150.0f;      // PID电流环D轴参数->积分项下限
+    user->transfer.Current_D.OutMax = 15.0f;        // PID电流环D轴参数->最大限幅
+    user->transfer.Current_D.OutMin = -15.0f;       // PID电流环D轴参数->最小限幅
+    user->transfer.Current_D.IntMax = 10.0f;       // PID电流环D轴参数->积分项上限
+    user->transfer.Current_D.IntMin = -10.0f;      // PID电流环D轴参数->积分项下限
 
 
     /* =================================== 分割线 ================================= */
@@ -65,10 +67,10 @@ static inline void User_Parameter_Init(SguanFOC_System_STRUCT *user){
     user->transfer.Current_Q.Kp = user->motor.identify.Lq*Curr_alpha;          // PID电流环Q轴参数->Kp
     user->transfer.Current_Q.Ki = user->motor.identify.Rs*Curr_alpha;         // PID电流环Q轴参数->Ki
     user->transfer.Current_Q.Kd = 0.0f;             // PID电流环Q轴参数->Kd
-    user->transfer.Current_Q.OutMax = 10.0f;        // PID电流环Q轴参数->最大限幅
-    user->transfer.Current_Q.OutMin = -10.0f;       // PID电流环Q轴参数->最小限幅
-    user->transfer.Current_Q.IntMax = 150.0f;       // PID电流环Q轴参数->积分项上限
-    user->transfer.Current_Q.IntMin = -150.0f;      // PID电流环Q轴参数->积分项下限
+    user->transfer.Current_Q.OutMax = 15.0f;        // PID电流环Q轴参数->最大限幅
+    user->transfer.Current_Q.OutMin = -15.0f;       // PID电流环Q轴参数->最小限幅
+    user->transfer.Current_Q.IntMax = 10.0f;       // PID电流环Q轴参数->积分项上限
+    user->transfer.Current_Q.IntMin = -10.0f;      // PID电流环Q轴参数->积分项下限
 
     // 2.转速环参数
     #if CONFIG_CtrlVel==Control_LADRC
@@ -274,6 +276,8 @@ static inline void User_Parameter_Init(SguanFOC_System_STRUCT *user){
     user->motor.identify.go.Set_Us = 3.8f;          // 磁链辨识注入电压幅值
     user->motor.identify.go.Set_Delay = 600.0f;       // 辨识中途延时的单位时间
 }
+
+static inline void User_ParaInit(void){ User_Parameter_Init(&Sguan); }
 
 
 #endif // USERDATA_PARAMETER_H
